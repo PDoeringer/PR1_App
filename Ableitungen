@@ -1,0 +1,484 @@
+import java.util.Arrays;
+
+import com.sun.javafx.fxml.expression.VariableExpression;
+
+import javafx.scene.layout.Background;
+import javafx.util.converter.ShortStringConverter;
+
+public class Ableitungen {
+	
+	
+	// tells if the character is a number or point
+	public static boolean is_number(char character) {
+			if (Character.isDigit(character) || character == '.' || character == '-')
+				return true;
+		return false;
+	}
+	
+	
+	//multiply given values
+	public static String multiply_values(String combined_numbers) {
+		String [] variables = combined_numbers.split(" \\+ ");
+		double only_num = 1;
+		String mul_var = "";
+		String rest_num = "";
+		boolean in_rest_num;
+		
+		for (String variable : variables) {
+			in_rest_num = false;
+			for (char character : variable.toCharArray()) {
+				if (!in_rest_num && is_number(character))
+					mul_var = mul_var + character;
+				else {
+					in_rest_num = true;
+					rest_num = rest_num + character;
+				}
+			}
+			
+			if(mul_var.equals(""))
+				mul_var = "1";
+			if(mul_var.equals("-"))
+				mul_var = "-1";
+			
+			only_num = only_num * Float.parseFloat(mul_var);
+			mul_var = "";
+		}
+		
+		return "" + only_num + rest_num;
+	}// wer
+	
+	
+	// deletes unnecessary '-' 
+	public static String rid_of_minus(String variable) {
+		String new_var = "";
+		int minus_count = 0;
+		
+		boolean count = true;
+		
+		for (char character : variable.toCharArray()) {
+			
+			if (character == '-' && count)
+				minus_count++;
+			else
+				new_var = new_var + character;
+			
+			if(character == '(' || character == '^')
+				count = false;
+		}
+		
+		if(minus_count % 2 == 1)
+			return "-" + new_var;
+		
+		return new_var;
+	}
+	
+	
+	// deletes unnecessary '1'
+	public static String rid_of_one(String variable) {
+		String re_var = "";
+		
+		String num1 = "a";
+		String num2 = "a";
+		String num3 = "a";
+		
+		boolean is_one = false;
+		boolean is_number = false;
+		
+		for (char character : (variable + "aaa").toCharArray()) {
+			num3 = num2;
+			num2 = num1;
+			num1 = "" + character;
+			
+			
+			if(!is_number(num3.charAt(0)) && num2.charAt(0) == '1' && !is_number(num1.charAt(0)))
+				continue;
+			re_var = re_var + num2;
+			
+		}
+		
+		return re_var.substring(1,re_var.length() - 2);
+	}
+	
+	
+	//deletes unnecessary '^'
+	public static String rid_of_up(String variable) {
+		if (variable.charAt(variable.length() - 1) == '^')
+			return variable.substring(0,variable.length() - 1);
+		return variable;
+	}
+	
+	
+	// gets_values in front, in and behind the clam
+	public static String [] get_fr_in_bc_in_clam(String variable) {
+		
+		String fr_clam = "";
+		String in_clam = "";
+		String bc_clam = "";
+		
+		int start_clam = 0;
+		boolean got_fr_clam = false;
+		
+		
+		for (char character : variable.toCharArray()) {
+			if(character == '(') {
+				got_fr_clam = true;
+				start_clam++;
+			}
+			if(character == ')')
+				start_clam--;
+			
+			if(start_clam == 0 && !got_fr_clam)
+				fr_clam = fr_clam + character;
+			else if(start_clam != 0)
+				in_clam = in_clam + character;
+			else 
+				bc_clam = bc_clam + character;
+		
+		}
+		
+		String[] re = {fr_clam, in_clam.substring(1,in_clam.length()), bc_clam.substring(1,bc_clam.length())};
+		return re;
+	}
+	
+	
+	// gets_values in front and behind x
+	public static String [] get_fr_bc_x(String variable, char x) {
+		
+		String fr = "";
+		String bc = "";
+		boolean count_fr = true;
+		
+		
+		for (char character : variable.toCharArray()) {
+			if(character == x) {
+				count_fr = false;
+				continue;
+			}
+			if(count_fr)
+				fr = fr + character;
+			else
+				bc = bc + character;	
+		}
+		
+		String[] re = {fr, bc};
+		return re;
+	}
+
+	
+	// the variable contains a sin or cos function
+	public static boolean is_sin_cos(String varible) {
+		
+		char num1 = '1';
+		char num2 = '1';
+		char num3 = '1';
+		String num_ges = "";
+		
+		for (char character : varible.toCharArray()) {
+			
+			if(character == '(')
+				return false;
+			
+			num3 = num2;
+			num2 = num1;
+			num1 = character;
+			
+			
+			num_ges = "" + num3 + num2 + num1;
+			
+			if (num_ges.equals("sin") || num_ges.equals("cos"))
+				return true;
+			
+		}
+		
+		return false;
+	}
+	
+	
+	// tells if this is an e-function
+	public static boolean is_e(String varible) {
+		
+		char num1 = '0';
+		char num2 = '0';
+		
+		for (char character : varible.toCharArray()) {
+			
+			num2 = num1;
+			num1 = character;
+			
+			if (("" + num2 + num1).equals("e^"))
+				return true;
+		}
+		
+		return false;
+	}
+	
+	
+	// tells if there are more than one x
+	public static boolean is_double_x(String varible, char x) {
+		if (count_char(varible, x) > 1 && count_char(varible, '*') == 0) {
+			System.out.println("please make shure that the Xs are separated by a '*'");
+			return false;
+		} else if (count_char(varible, x) > 1)
+			return true;
+		
+		return false;
+	}
+	
+	
+	// '(' is in String
+	public static boolean clam_is_in(String varible) {
+		
+		for (char character : varible.toCharArray()) {
+			if (character == '(')
+				return true;
+		}
+		
+		return false;
+	}
+	
+	
+	// counts how often the character is in the variable
+	public static int count_char(String varible, char count_num) {
+		int count = 0;
+		
+		for (char character : varible.toCharArray()) {
+			if (character == count_num)
+				count++;
+		}
+		
+		return count;
+	}
+	
+	
+	// splits the function into an array with single variables
+	public static String[] extract_single_variable(String f) {
+		String [] varibles = f.split(" \\+ ");
+		
+		
+		int clam_in = 0;
+		String re_var = "";
+		String new_f = "";
+		
+		
+		for (String varible : varibles) {
+			re_var = re_var + varible + " + ";
+			
+			if (clam_is_in(varible))
+				clam_in = clam_in + count_char(varible, '(');;
+			
+			clam_in = clam_in - count_char(varible, ')');
+			
+			if (clam_in == 0) {
+				new_f = new_f + re_var.substring(0,re_var.length() - 3) + " % ";
+				re_var = "";
+			}
+			
+			
+			
+		}
+		
+		return new_f.split(" % ");
+	}
+	
+	
+	// deletes all variables without an x
+	public static String[] rid_of_not_x(String [] varibles, char x) {
+		
+		
+		boolean x_us_in = false;
+		String re_f = "";
+		
+		for (String varible : varibles) {
+			for (char character : varible.toCharArray()) {
+				if (character == x)
+					x_us_in = true;
+			}
+			if (x_us_in) {
+				re_f = re_f + varible + " + ";
+				x_us_in = false;
+			}
+		}
+		
+		return extract_single_variable(re_f);
+	}
+	
+	
+	// derives x^something
+	public static String normal_deriving(String varible, char x) {
+		
+		String [] numbers = get_fr_bc_x(varible, x);
+		String num_front = numbers[0];
+		String num_back = numbers[1];
+
+		String int_num_front = "";
+		String int_num_back = "";
+		String res_num_front = "";
+		String res_num_back = "";
+
+		for (char character : num_front.toCharArray()) {
+			if (is_number(character))
+				int_num_front = int_num_front + character;
+			else
+				res_num_front = res_num_front + character;
+		}
+		for (char character : num_back.toCharArray()) {
+			if (is_number(character))
+				int_num_back = int_num_back + character;
+			else {
+				int_num_back = "";
+				res_num_back = res_num_back + character;
+			}
+		}
+			
+		
+		if (int_num_front.equals(""))
+			int_num_front = "1";
+		if (int_num_back.equals("")) 
+			return int_num_front + res_num_front;
+		
+		
+
+		float new_num_front = Float.parseFloat(int_num_front) * Float.parseFloat(int_num_back);
+		float new_num_back = Float.parseFloat(int_num_back) - 1;
+
+		
+		return "" + new_num_front + res_num_front + "x" + res_num_back + new_num_back;
+	}
+	
+	
+	
+	//derives sin or cos
+	public static String sin_cos_deriving(String variable, char x) {
+		
+		String[] numbers = get_fr_in_bc_in_clam(variable);
+		String num_fr = numbers[0];
+		String num_in = numbers[1];
+		String num_bc = numbers[2];
+		
+		if (count_char(num_in, x) == 0)
+			return normal_deriving(variable, x);
+		
+		String sin_cos = num_fr.substring(num_fr.length() - 3, num_fr.length());
+		
+		String numtiply_with_fr = Ableiten(num_in, x);
+		String new_num_fr = multiply_values(numtiply_with_fr + " + " + num_fr.substring(0,num_fr.length() - 3));
+		
+		
+		if (sin_cos.equals("sin"))
+			return new_num_fr + "cos" + "(" + num_in + ")" + num_bc;
+		
+		
+		return "-" + new_num_fr + "sin" + "(" + num_in + ")" + num_bc;
+	}
+	
+	
+	public static String e_deriving(String variable, char x) {
+		String [] fr_bc = get_fr_bc_x(variable, 'e');
+		String fr = fr_bc[0];
+		String bc = fr_bc[1];
+		
+		String mul_num = chose_the_derivion(bc.substring(1,bc.length()), x);
+		
+		String new_fr = multiply_values(fr + " + " + mul_num);
+		
+		
+		return new_fr + "e" + bc;
+	}
+	
+	
+	// x*x deriving
+	public static String double_x_deriving(String variable, char x) {
+		String [] variables = variable.split("\\*");
+		String var1 = variables[0];
+		String var2 = variables[1];
+		
+		String var1_ab = chose_the_derivion(variables[0], x);
+		String var2_ab = chose_the_derivion(variables[1], x);
+		
+		String re_var1 = "";
+		String re_var2 = "";
+		
+		if(count_char(var2_ab, x) == 0)
+			re_var1 = multiply_values(var1 + " + " + var2_ab);
+		else
+			re_var1 = var1 + "*" + var2_ab;
+		
+		if(count_char(var1_ab, x) == 0)
+			re_var2 = multiply_values(var2 + " + " + var1_ab);
+		else
+			re_var2 = var2 + "*" + var1_ab;
+			
+			
+		return re_var1 + " + " + re_var2;
+		
+	}
+	
+	
+	// derives (something)^something
+	public static String derive_clam(String variable, char x) {
+		String [] fr_in_bc = get_fr_in_bc_in_clam(variable);
+		String num_fr = fr_in_bc[0];
+		String num_in = fr_in_bc[1];
+		String num_bc = fr_in_bc[2];
+		
+		String mul_fr = Ableiten(num_in, x);
+		
+		String new_fr = multiply_values(mul_fr + " + " + num_fr);
+		
+		String new_bc = "" + (Float.parseFloat(num_bc.substring(1,num_bc.length())) - 1);
+		
+		
+		return new_fr + "(" + num_in + ")^" + new_bc;
+	}
+
+	
+	// makes the variable easier to read
+	public static String get_rid_of_unnecesitys(String variable) {
+		String new_variable = rid_of_minus(variable);
+		new_variable = rid_of_one(new_variable);
+		new_variable = rid_of_up(new_variable);
+		return new_variable;
+	}
+	
+	
+	
+	// choses the right derivion
+	public static String chose_the_derivion(String variable, char x) {
+		
+		if (is_double_x(variable, x))
+			return get_rid_of_unnecesitys(double_x_deriving(variable, x));
+		
+		if(is_e(variable))
+			return get_rid_of_unnecesitys(e_deriving(variable, x));
+		
+		// normal clam
+		if(clam_is_in(variable) && !is_sin_cos(variable))
+			return get_rid_of_unnecesitys(variable);
+		
+		//sin or cos is in
+		if(is_sin_cos(variable))
+			return get_rid_of_unnecesitys(sin_cos_deriving(variable, x));
+		
+		String re_var = normal_deriving(variable, x);
+		return get_rid_of_unnecesitys(re_var);
+	}
+	
+	
+	
+	// derives the funtion
+	public static String Ableiten(String f, char x) {
+		String [] varibles = rid_of_not_x(extract_single_variable(f), x);
+		
+		
+		
+		//System.out.println(Arrays.toString(varibles));
+		
+		String re_f = "";
+		for (String variable : varibles) {
+			re_f = re_f + chose_the_derivion(variable, x) + " + ";
+		}
+		
+		return re_f.substring(0,re_f.length() - 3);
+	}
+
+}
