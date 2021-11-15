@@ -1,0 +1,36 @@
+import java.util.Arrays;
+
+//import Ableitungen;
+
+
+
+
+
+
+public class Test_main {
+	
+
+	public static void main(String[] args) {
+		
+		System.out.println(Ableitungen.Ableiten("2x + 3x^5 + 3 + (2x + 4)^2 + -cos(2x) + 2e^4x + 2x*2e^5x", 'x'));
+		//System.out.println(Ableitungen.sin_cos_deriving("-cos(2)x", 'x'));
+		//System.out.println(Ableitungen.rid_of_up("2x^2"));
+		//System.out.println(Ableitungen.rid_of_one("1x1s1s1s1s11s12s3d1s21"));
+		//System.out.println(Ableitungen.derive_clam("3(2x + 3)^3", 'x'));
+		//System.out.println(Ableitungen.double_x_deriving("2x*e^3x", 'x'));
+		//System.out.println(Ableitungen.is_double_x("x*e^x", 'x'));
+		//System.out.println(Ableitungen.e_deriving("2e^3x", 'x'));
+		//System.out.println(Ableitungen.is_e("12e^5x"));
+		//System.out.println(Ableitungen.rid_of_minus("--342x"));
+		//System.out.println(Ableitungen.sin_cos_deriving("-cos(2x)", 'x'));
+		//System.out.println(Ableitungen.multiply_values("2 + 5 + 6x + 3y"));
+		//System.out.println(Arrays.toString(Ableitungen.get_fr_bc_x("2x^4", 'x')));
+		//System.out.println(Arrays.toString(Ableitungen.get_fr_in_bc_in_clam("12(2x + 4)^2")));
+		//System.out.println(Ableitungen.is_sin_cos("(cos(2x))"));
+		//System.out.println(Ableitungen.normal_deriving("3x^5", 'x'));
+		
+		
+
+	}
+
+}
