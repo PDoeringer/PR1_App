@@ -470,9 +470,6 @@ public class Ableitungen {
 		String [] varibles = rid_of_not_x(extract_single_variable(f), x);
 		
 		
-		
-		//System.out.println(Arrays.toString(varibles));
-		
 		String re_f = "";
 		for (String variable : varibles) {
 			re_f = re_f + chose_the_derivion(variable, x) + " + ";
