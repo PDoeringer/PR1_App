@@ -1,36 +1,81 @@
-import java.util.Arrays;
-
-//import Ableitungen;
-
-
-
-
-
+import java.util.Scanner;
 
 public class Test_main {
 	
 
 	public static void main(String[] args) {
 		
-		System.out.println(Ableitungen.Ableiten("2x + 3x^5 + 3 + (2x + 4)^2 + -cos(2x) + 2e^4x + 2x*2e^5x", 'x'));
-		//System.out.println(Ableitungen.sin_cos_deriving("-cos(2)x", 'x'));
-		//System.out.println(Ableitungen.rid_of_up("2x^2"));
-		//System.out.println(Ableitungen.rid_of_one("1x1s1s1s1s11s12s3d1s21"));
-		//System.out.println(Ableitungen.derive_clam("3(2x + 3)^3", 'x'));
-		//System.out.println(Ableitungen.double_x_deriving("2x*e^3x", 'x'));
-		//System.out.println(Ableitungen.is_double_x("x*e^x", 'x'));
-		//System.out.println(Ableitungen.e_deriving("2e^3x", 'x'));
-		//System.out.println(Ableitungen.is_e("12e^5x"));
-		//System.out.println(Ableitungen.rid_of_minus("--342x"));
-		//System.out.println(Ableitungen.sin_cos_deriving("-cos(2x)", 'x'));
-		//System.out.println(Ableitungen.multiply_values("2 + 5 + 6x + 3y"));
-		//System.out.println(Arrays.toString(Ableitungen.get_fr_bc_x("2x^4", 'x')));
-		//System.out.println(Arrays.toString(Ableitungen.get_fr_in_bc_in_clam("12(2x + 4)^2")));
-		//System.out.println(Ableitungen.is_sin_cos("(cos(2x))"));
-		//System.out.println(Ableitungen.normal_deriving("3x^5", 'x'));
+		System.out.println("This program will give you back the derivation of a you wride in formula.");
+		System.out.println("You just need to make shure that you use '^' if you want to square something");
+		System.out.println("e.g. 3x^5.");
+		System.out.println("Furthermore if you multiply two values, with both the to derivationed variable");
+		System.out.println("in it, with each other make shure you write it like that: var1*var2 e.g. x*e^x");
+		System.out.println("just to show you, you could wride: ");
+		System.out.println("2x + 3x^5 + 3 + (2x + 4)^2 + -cos(2x) + 2e^4x + 2x*2e^5x");
+		System.out.println("");
 		
+		
+		Scanner scanner = new Scanner(System.in);
+		
+		while(true) {
+			System.out.print("Please wride the formula here:");
+			String formula = scanner.nextLine();
+			System.out.print("Which variable would you like to have this formula derivated to: ");
+			char variable = get_var();
+			
+			
+			
+			System.out.println(Ableitungen.Ableiten(formula, variable));
+			
+			
+			System.out.println("");
+			System.out.println("Would you like get the derivation of another formula (j/n)?");
+			
+			String answer = scanner.nextLine();
+			
+			if (!answer.equals("j"))
+				break;
+		}
 		
 
 	}
+	
+	
+	
+	public static char get_var() {
+		Scanner scanner = new Scanner(System.in);
+		String variable = scanner.nextLine();
+		
+		char char_var;
+		if (variable.length() == 1)
+			char_var = variable.charAt(0);
+		else {
+			System.out.println("There seems to be something wrong please try writing down the variable again:");
+			char_var = get_var();
+		}
+		
+		if (!Character.isLowerCase(char_var)) {
+			System.out.println("There seems to be something wrong please try writing down the variable again:");
+			char_var = get_var();
+		}
+		
+		
+		return char_var;
+	}
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
