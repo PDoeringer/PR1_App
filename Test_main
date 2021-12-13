@@ -19,11 +19,9 @@ public class Test_main {
 		
 		while(true) {
 			System.out.print("Please wride the formula here:");
-			String formula = scanner.nextLine();
+			String formula = get_formula();
 			System.out.print("Which variable would you like to have this formula derivated to: ");
 			char variable = get_var();
-			
-			
 			
 			System.out.println(Ableitungen.Ableiten(formula, variable));
 			
@@ -38,6 +36,27 @@ public class Test_main {
 		}
 		
 
+	}
+	
+	
+	public static String get_formula() {
+		Scanner scanner = new Scanner(System.in);
+		String formula = scanner.nextLine();
+		
+		char [] letters = formula.toCharArray();
+		
+		for (char letter : letters) {
+			if (Character.isUpperCase(letter)) {
+				System.out.println("Please only use lowercase letters for the variables.");
+				System.out.print("Wride the formula here:");
+				formula = get_formula();
+				break;
+			}
+		}
+		
+		
+		
+		return formula;
 	}
 	
 	
